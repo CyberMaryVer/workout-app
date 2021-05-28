@@ -64,7 +64,7 @@ The program runs as a command-line script. Below you can see the list of availab
   
   # VISUALISATION SETTINGS
   --skeleton            If set to 0 shows only keypoints, 1 - default, 2 - headless.
-  --mode                Mode: [keypoints_names, angles, symmetry].
+  --mode                Mode: [gravity_center, angles, symmetry].
   
   # DEBUG OPTIONS
   --test                Test camera
