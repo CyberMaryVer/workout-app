@@ -2,9 +2,20 @@
 
 Workout app with pose estimation
 
+![img](images/result_.gif)
+
+### Requirements
+
 Use ```pip install -r mpipe_requirements.txt``` to install all required packages
 
-Examples of usage:
+### App installation
+
+```shell
+git clone https://github.com/CyberMaryVer/workout-app.git
+cd workout_web
+```
+
+### Examples of usage:
 
 * test camera
 ```shell
@@ -46,16 +57,15 @@ The program runs as a command-line script. Below you can see the list of availab
   -h, --help            show this help message and exit
   
   # GENERAL PARAMETERS
+  --repetitions         How many repetitions you want to do (by default 4)
+  --weight              Your weight in kilograms (by default 55 kg)
+  --config              Workout config (by default dumbbell_lateral_raise)
   --save_video          Save video file (result.mp4 - by default).
-  --path                Path to video file.
   
   # VISUALISATION SETTINGS
   --skeleton            If set to 0 shows only keypoints, 1 - default, 2 - headless.
   --mode                Mode: [keypoints_names, angles, symmetry].
-  --scale               Set scale parameter.
   
   # DEBUG OPTIONS
   --test                Test camera
-  --debug               Set logging mode to "debug".
-
 ```

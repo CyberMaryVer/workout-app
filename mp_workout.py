@@ -310,7 +310,7 @@ def get_parser():
     parser.add_argument("--test", action="store_true", help="test camera")
     parser.add_argument("--repetitions", type=int, default=4, help="number of repetitions")
     parser.add_argument("--weight", type=int, default=60, help="your weight")
-    parser.add_argument("--config", type=str, default="dumbbell_shoulder_press", help="workout config file")
+    parser.add_argument("--config", type=str, default="dumbbell_lateral_raise", help="workout config file")
     parser.add_argument("--mode", type=str, default=None, help="visualization mode")
     parser.add_argument("--skeleton", type=str, default=None, help="skeleton mode")
     parser.add_argument("--save_video", action="store_true", help="save result as mp4 file")
