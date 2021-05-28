@@ -35,11 +35,20 @@ python mp_workout.py --mode symmetry --skeleton 1 --config dumbbell_lateral_rais
 python mp_workout.py --mode gravity-center --skeleton 0
 ```
 
-* *by default* - workout **DUMBBELL SHOULDER PRESS**
+* *by default* - workout **DUMBBELL LATERAL RAISE**
   - visualize with headless skeleton
 ```shell
 python mp_workout.py 
 ```
+### Types of workouts 
+(more types will be added in the future)
+
+**DUMBBELL LATERAL RAISE**
+![img](images/w3.jpg)
+
+**DUMBBELL SHOULDER PRESS**
+![img](images/w0.jpg)
+
 ### Example of different visualization parameters:
 1. ```--mode symmetry --skeleton 1```
    
