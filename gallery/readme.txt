@@ -1,0 +1,1 @@
+This folder is for saving of the photos with workout results
