@@ -1,0 +1,50 @@
+WINDOW_NAME: "DUMBBELL LATERAL RAISE"
+
+TEXT: "Including the dumbbell shoulder press exercise into your shoulder routine is essential
+        in order to develop strong deltoids. It’s a compound exercise that targets the anterior
+        head of the deltoid and the triceps – which are both greatly involved during the press.
+        Having strong anterior deltoids will also improve your strength and stability during a bench press."
+
+ANGLES:
+- "left_shoulder": !!python/tuple [90, 110]
+  "left_elbow": !!python/tuple [150, 180]
+  "right_shoulder": !!python/tuple [ 90, 110 ]
+  "right_elbow": !!python/tuple [ 150, 180 ]
+- "left_shoulder": !!python/tuple [160, 180]
+  "left_elbow": !!python/tuple [150, 180]
+  "right_shoulder": !!python/tuple [ 160, 180 ]
+  "right_elbow": !!python/tuple [ 150, 180 ]
+- "left_shoulder": !!python/tuple [90, 110]
+  "left_elbow": !!python/tuple [0, 180]
+  "right_shoulder": !!python/tuple [ 90, 110 ]
+  "right_elbow": !!python/tuple [ 0, 180 ]
+
+
+HIGH_LOW: [["nose", "left_wrist"],
+           ["nose", "left_wrist"],
+           ["nose", "left_wrist"]]
+
+ERRORS:
+- "left_elbow": !!python/tuple [ 160, 180 ]
+  "right_elbow": !!python/tuple [ 160, 180 ]
+  "left_shoulder": !!python/tuple [ 50, 180 ]
+  "right_shoulder": !!python/tuple [ 50, 180 ]
+- "left_elbow": !!python/tuple [ 155, 180 ]
+  "right_elbow": !!python/tuple [ 155, 180 ]
+  "left_shoulder": !!python/tuple [ 50, 180 ]
+  "right_shoulder": !!python/tuple [ 50, 180 ]
+- "left_elbow": !!python/tuple [ 160, 180 ]
+  "right_elbow": !!python/tuple [ 160, 180 ]
+  "left_shoulder": !!python/tuple [ 50, 180 ]
+  "right_shoulder": !!python/tuple [ 50, 180 ]
+
+DESCRIPTION: ["Position your body upright, tightening your core and head up straight.",
+              "Using minimum momentum as possible, exhale whilst raising the dumbbell to the side of the body,
+              with a slight bend in the elbow.",
+              "Hold the weight at the top of the movement for 1-2 seconds, squeezing the contraction. \
+              Inhale whilst lowering the weight back down slowly."
+              ]
+
+IMAGE: ["images/step0w3.jpg", "images/step1w3.jpg", "images/step0w3.jpg"]
+
+MET: 6

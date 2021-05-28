@@ -1,0 +1,40 @@
+WINDOW_NAME: "DUMBBELL SHOULDER PRESS"
+
+TEXT: "Including the dumbbell shoulder press exercise into your shoulder routine is essential
+        in order to develop strong deltoids. It’s a compound exercise that targets the anterior
+        head of the deltoid and the triceps – which are both greatly involved during the press.
+        Having strong anterior deltoids will also improve your strength and stability during a bench press."
+
+ANGLES:
+- "left_shoulder": !!python/tuple [ 90, 180 ]
+  "left_elbow": !!python/tuple [ 20, 70 ]
+  "right_shoulder": !!python/tuple [ 90, 180 ]
+  "right_elbow": !!python/tuple [ 20, 70 ]
+- "left_shoulder": !!python/tuple [ 90, 180 ]
+  "left_elbow": !!python/tuple [ 150, 180 ]
+  "right_shoulder": !!python/tuple [ 90, 180 ]
+  "right_elbow": !!python/tuple [ 150, 180 ]
+
+
+HIGH_LOW: [["nose", "left_elbow"],
+           ["left_wrist", "nose"],]
+
+ERRORS:
+- "left_shoulder": !!python/tuple [ 90, 180 ]
+  "left_elbow": !!python/tuple [ 100, 180 ]
+  "right_shoulder": !!python/tuple [ 90, 180 ]
+  "right_elbow": !!python/tuple [ 100, 180 ]
+- "left_shoulder": !!python/tuple [ 90, 180 ]
+  "left_elbow": !!python/tuple [ 30, 100 ]
+  "right_shoulder": !!python/tuple [ 90, 180 ]
+  "right_elbow": !!python/tuple [ 30, 100 ]
+
+DESCRIPTION: ["Keep your torso tight. Hold the contraction at the top. \
+               Slowly inhale and begin to lower the weights to shoulder height.",
+              "Exhale whilst beginning to raise the weights towards the ceiling with palms facing forwards.",
+              "Repeat."
+              ]
+
+IMAGE: ["images/step0w0.jpg", "images/step1w0.jpg"]
+
+MET: 6

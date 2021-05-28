@@ -1,0 +1,9 @@
+.idea
+testdata
+tutorials
+preprocess
+gallery/*.jpg
+venv
+*.jpg
+*.mp4
+sandbox.py
