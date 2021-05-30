@@ -130,26 +130,32 @@ class MpipePredictor(mp.solutions.pose.Pose):
         if results is None:
             return
         idxs = mp.solutions.pose.PoseLandmark
-        self.keypoints = {'nose': results.pose_landmarks.landmark[idxs.NOSE],
-                          'left_eye': results.pose_landmarks.landmark[idxs.LEFT_EYE],
-                          'right_eye': results.pose_landmarks.landmark[idxs.RIGHT_EYE],
-                          'left_ear': results.pose_landmarks.landmark[idxs.LEFT_EAR],
-                          'right_ear': results.pose_landmarks.landmark[idxs.RIGHT_EAR],
-                          'left_shoulder': results.pose_landmarks.landmark[idxs.LEFT_SHOULDER],
-                          'right_shoulder': results.pose_landmarks.landmark[idxs.RIGHT_SHOULDER],
-                          'left_elbow': results.pose_landmarks.landmark[idxs.LEFT_ELBOW],
-                          'right_elbow': results.pose_landmarks.landmark[idxs.RIGHT_ELBOW],
-                          'left_wrist': results.pose_landmarks.landmark[idxs.LEFT_WRIST],
-                          'right_wrist': results.pose_landmarks.landmark[idxs.RIGHT_WRIST],
-                          'left_hip': results.pose_landmarks.landmark[idxs.LEFT_HIP],
-                          'right_hip': results.pose_landmarks.landmark[idxs.RIGHT_HIP],
-                          'left_knee': results.pose_landmarks.landmark[idxs.LEFT_KNEE],
-                          'right_knee': results.pose_landmarks.landmark[idxs.RIGHT_KNEE],
-                          'left_ankle': results.pose_landmarks.landmark[idxs.LEFT_ANKLE],
-                          'right_ankle': results.pose_landmarks.landmark[idxs.RIGHT_ANKLE]}
-        keypoints_dict = {}
-        for name, obj in self.keypoints.items():
-            keypoints_dict.update({name: self._get_coords(obj, img.shape, get3d)})
+        try:
+            self.keypoints = {'nose': results.pose_landmarks.landmark[idxs.NOSE],
+                              'left_eye': results.pose_landmarks.landmark[idxs.LEFT_EYE],
+                              'right_eye': results.pose_landmarks.landmark[idxs.RIGHT_EYE],
+                              'left_ear': results.pose_landmarks.landmark[idxs.LEFT_EAR],
+                              'right_ear': results.pose_landmarks.landmark[idxs.RIGHT_EAR],
+                              'left_shoulder': results.pose_landmarks.landmark[idxs.LEFT_SHOULDER],
+                              'right_shoulder': results.pose_landmarks.landmark[idxs.RIGHT_SHOULDER],
+                              'left_elbow': results.pose_landmarks.landmark[idxs.LEFT_ELBOW],
+                              'right_elbow': results.pose_landmarks.landmark[idxs.RIGHT_ELBOW],
+                              'left_wrist': results.pose_landmarks.landmark[idxs.LEFT_WRIST],
+                              'right_wrist': results.pose_landmarks.landmark[idxs.RIGHT_WRIST],
+                              'left_hip': results.pose_landmarks.landmark[idxs.LEFT_HIP],
+                              'right_hip': results.pose_landmarks.landmark[idxs.RIGHT_HIP],
+                              'left_knee': results.pose_landmarks.landmark[idxs.LEFT_KNEE],
+                              'right_knee': results.pose_landmarks.landmark[idxs.RIGHT_KNEE],
+                              'left_ankle': results.pose_landmarks.landmark[idxs.LEFT_ANKLE],
+                              'right_ankle': results.pose_landmarks.landmark[idxs.RIGHT_ANKLE]}
+            keypoints_dict = {}
+            for name, obj in self.keypoints.items():
+                keypoints_dict.update({name: self._get_coords(obj, img.shape, get3d)})
+
+        except AttributeError:
+            print("#Error: no object found, pose is not detected.")
+            return
+
         return keypoints_dict
 
     def _get_coords(self, keypoint, img_shape=None, with_z=True):

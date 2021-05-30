@@ -18,6 +18,8 @@ DEFAULT_SKELETON = 2
 
 
 # TODO: replace code with draw_frame method
+# TODO: implement get_frame method
+# TODO: web API
 
 class MpipeWorkout:
     def __init__(self, weight, workout_reps, config: WorkoutDataLoader):
@@ -272,8 +274,6 @@ class MpipeWorkout:
                                                            fourcc=cv2.VideoWriter_fourcc(*"mp4v"), fps=40.,
                                                            frameSize=(frame_height, frame_width), isColor=True, )
                     if self.OUTPUT_FILE is not None:
-                        # frame_ = frame.copy()
-                        # frame_ = self.improve_photo(frame_)
                         self.OUTPUT_FILE.write(frame)
 
         cam.release()

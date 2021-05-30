@@ -88,12 +88,13 @@ def prepare_images(folder):
     print(list_images)
 
 
-def example(detectron=False, mediapipe=False, mode=None):
+def example(detectron=False, mediapipe=False, mode=None, im=None, show_result=True, save_result=False):
     """Shows example of use"""
     # test file
     import cv2.cv2 as cv2
     from visualization import visualize_keypoints
-    im = cv2.imread("images/test.jpg")
+    if im is None:
+        im = cv2.imread("images/test.jpg")
 
     # example of mediapipe inference
     if mediapipe:
@@ -101,8 +102,11 @@ def example(detectron=False, mediapipe=False, mode=None):
         predictor = MpipePredictor(detection_thr=.8, tracking_thr=.9)
         kps = predictor.get_keypoints(im)
         visualize_keypoints(kps, im, threshold=0., mode=mode, scale=.9)
-        cv2.imshow("", im)
-        cv2.waitKey(0)
+        if show_result:
+            cv2.imshow("", im)
+            cv2.waitKey(0)
+        if save_result:
+            cv2.imwrite("mediapipe_example.jpg")
 
     # example of detectron2 inference on cpu
     if detectron:
@@ -110,9 +114,14 @@ def example(detectron=False, mediapipe=False, mode=None):
         predictor = DtPredictor(device="cpu")
         kps = predictor.get_kps(im, instance=0)
         visualize_keypoints(kps, im, threshold=0., mode=mode, scale=.9)
-        cv2.imshow("", im)
-        cv2.waitKey(0)
+        if show_result:
+            cv2.imshow("", im)
+            cv2.waitKey(0)
+        if save_result:
+            cv2.imwrite("detectron_example.jpg")
+
+    return im
 
 
 if __name__ == "__main__":
-    pass
+    example(detectron=True)
