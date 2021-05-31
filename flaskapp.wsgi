@@ -1,4 +1,4 @@
 import sys
-sys.path.insert(0, '/var/www/html/workout-web/flask_app')
+sys.path.insert(0, '/var/www/html/workout-app/')
 
-from flask_app import app as application
+from workout_web import app as application
