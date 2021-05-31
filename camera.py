@@ -1,4 +1,9 @@
-import cv2.cv2 as cv2
+###########################
+try:
+    import cv2.cv2 as cv2
+except Exception as e:
+    import cv2
+###########################
 import threading
 import time
 from datetime import datetime

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 # Detectron2 & Mediapipe implementation
-
+###########################
+try:
+    import cv2.cv2 as cv2
+except Exception as e:
+    import cv2
+###########################
 import mediapipe as mp
-import cv2.cv2 as cv2
 import os
 from visualization import CvFpsCalc, visualize_keypoints
 from geometry import get_central_points

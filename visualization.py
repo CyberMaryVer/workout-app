@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 # Detectron2 & Mediapipe implementation
 
-import cv2.cv2 as cv2
+###########################
+try:
+    import cv2.cv2 as cv2
+except Exception as e:
+    import cv2
+###########################
 import textwrap
 import numpy as np
 from collections import deque

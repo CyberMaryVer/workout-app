@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 # Detectron2 & Mediapipe implementation
 
+###########################
+try:
+    import cv2.cv2 as cv2
+except Exception as e:
+    import cv2
+###########################
 import multiprocessing as mp
 import tqdm
 from time import time
 import numpy as np
 import argparse
-import cv2.cv2 as cv2
-
-from visualization import get_updated_keypoint_dict, draw_joints, draw_skeleton, draw_text, visualize_keypoints, \
+from visualization import get_updated_keypoint_dict, draw_joints, draw_skeleton, visualize_keypoints, \
     draw_box_with_text
 from mp_predictor import MpipePredictor
 from utils import save_results_to_csv

@@ -3,7 +3,12 @@ from flask import Flask, render_template, send_from_directory, Response
 from pathlib import Path
 from capture import capture_and_save
 from camera import Camera
-import cv2.cv2 as cv2
+###########################
+try:
+    import cv2.cv2 as cv2
+except Exception as e:
+    import cv2
+###########################
 import argparse, logging, logging.config, conf
 
 logging.config.dictConfig(conf.dictConfig)
