@@ -7,3 +7,4 @@ gallery/*.jpg
 venv
 *.mp4
 sandbox.py
+*.pem
