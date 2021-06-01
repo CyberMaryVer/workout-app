@@ -1,9 +1,4 @@
-###########################
-try:
-    import cv2.cv2 as cv2
-except Exception as e:
-    import cv2
-###########################
+import cv2
 from utils import example
 from pathlib import Path
 
