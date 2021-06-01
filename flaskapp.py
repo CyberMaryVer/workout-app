@@ -1,4 +1,4 @@
-import cv2
+# import cv2
 from flask import Flask, render_template, send_from_directory, Response
 # from flask_socketio import SocketIO
 from pathlib import Path
@@ -61,11 +61,12 @@ def last_image():
 def gen(camera):
     logger.debug("Starting stream")
     ret = True
-    insert_img = cv2.imread("images/w3.jpg")
-    insert_img = cv2.resize(insert_img, None, None, fx=.4, fy=.4)
+    # insert_img = cv2.imread("images/w3.jpg")
+    # insert_img = cv2.resize(insert_img, None, None, fx=.4, fy=.4)
 
     while ret:
-        frame, ret = camera.get_pose(insert_img=insert_img)
+        frame, ret = camera.get_pose()
+        # frame, ret = camera.get_pose(insert_img=insert_img)
         yield b'--frame\r\n'b'Content-Type: image/png\r\n\r\n' + frame + b'\r\n'
 
     camera.restart()
