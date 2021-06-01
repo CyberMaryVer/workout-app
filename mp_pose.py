@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
-# Detectron2 & Mediapipe implementation
-
-###########################
-try:
-    import cv2.cv2 as cv2
-except Exception as e:
-    import cv2
-###########################
+import cv2
 import multiprocessing as mp
 import tqdm
 from time import time
