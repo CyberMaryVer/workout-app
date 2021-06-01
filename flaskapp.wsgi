@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import numpy
 import site
 
 site.addsitedir('/home/ubuntu/.local/lib/python3.8/site-packages')
