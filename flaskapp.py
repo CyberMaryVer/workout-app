@@ -65,11 +65,11 @@ def gen(camera):
     insert_img = cv2.resize(insert_img, None, None, fx=.4, fy=.4)
 
     while ret:
-        # frame, ret = camera.get_pose()
         frame, ret = camera.get_pose(insert_img=insert_img)
         yield b'--frame\r\n'b'Content-Type: image/png\r\n\r\n' + frame + b'\r\n'
 
     camera.restart()
+
 
 @app.route("/stream")
 def stream_page():
