@@ -240,6 +240,10 @@ class MpipeWorkout:
 
         while cv2.waitKey(1) != 27:
             ret, frame = cam.read()
+
+            if frame is None:
+                continue
+
             frame = cv2.flip(frame, 1)
             current += 1
 
@@ -324,6 +328,10 @@ class MpipeWorkout:
         frames_per_second = video.get(cv2.CAP_PROP_FPS)
         num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
         scale = max(self.W, self.H) / 400 * self.SCALE
+
+        if num_frames == 0:
+            print("#Error: video file is empty")
+            return
 
         frame_gen = self.frame_from_video(num_frames, video)
 
