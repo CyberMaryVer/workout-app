@@ -16,7 +16,9 @@ cd workout_web
 ```
 
 ### Examples of usage:
-
+___
+You can try it yourself on your video in colab [<img src="https://colab.research.google.com/assets/colab-badge.svg" align="center">](https://colab.research.google.com/drive/1rqsYjysQIvDpUzJLxUPOH9h6jQ3QhkT6?usp=sharing)
+___
 * test camera
 ```shell
 python mp_workout.py --test
