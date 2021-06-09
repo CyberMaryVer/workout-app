@@ -2,7 +2,7 @@ dataclasses==0.6
 imutils==0.5.4
 # opencv-contrib-python==4.5.1.48
 # opencv-python==4.5.1.48
-mediapipe
+mediapipe==0.8.4.2
 tqdm
-pyyaml
+pyyaml==5.4.1
 flask
