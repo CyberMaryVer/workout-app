@@ -39,6 +39,7 @@ class MpipeWorkout:
         self.BORDER = DEFAULT_BORDER
         self.SAVE_PATH = DEFAULT_SAVE_PATH
         self.SAVE_OUTPUT = DEFAULT_SAVE_OUTPUT
+        self.PATH_TO_VIDEO = None
         self.OUTPUT_FILE = None
         self.FINAL = None
         self.SHOW_FINAL = True
@@ -98,7 +99,7 @@ class MpipeWorkout:
 
         return img
 
-    def _check_exercise(self, img, kps, state=0, reps=0, angles=None, scale=1.):
+    def _check_exercise(self, img, kps, state=0, reps=0, angles=None, scale=1., verbose=True):
         """Checks if exercise is done correctly"""
         edge_color = (255, 255, 255)
         paste_check = False  # draws a check on the top of the frame
@@ -142,7 +143,8 @@ class MpipeWorkout:
 
         else:
             txt_debug = f"WAITING FOR THE NEXT POSITION. {txt.upper()}"
-            print(txt_debug)
+            if verbose:
+                print(txt_debug)
 
         # check conditions - correct position
         visual_check = self.compare_angles(angles, error_condition)
@@ -201,6 +203,17 @@ class MpipeWorkout:
         img_ = cv2.stylization(img_, sigma_s=95, sigma_r=0.95)
         img = cv2.addWeighted(img, .8, img_, .7, .5)
         return img
+
+    @staticmethod
+    def frame_from_video(num_frames, video):
+        f = 0
+        while f < num_frames:
+            success, frame = video.read()
+            if success:
+                yield frame
+                f += 1
+            else:
+                break
 
     def process(self):
         """Runs the stream from webcam and exercise checking process"""
@@ -264,7 +277,7 @@ class MpipeWorkout:
                     txt = "Try to stay visible for the camera"
                     frame = draw_box_with_text(frame, txt, edge_color=(255, 255, 255), border=self.BORDER)
 
-                frame = insert_image(frame, self.WORKOUT_IMAGES[state-1], x=440, y=35)
+                frame = insert_image(frame, self.WORKOUT_IMAGES[state - 1], x=440, y=35)
                 cv2.imshow(self.WINDOW_NAME, frame)
 
                 if self.SAVE_OUTPUT:
@@ -287,6 +300,86 @@ class MpipeWorkout:
             cv2.imshow("YOUR RESULT", self.FINAL)
             cv2.waitKey(0)
 
+    def process_video(self):
+        if self.PATH_TO_VIDEO is None:
+            return
+
+        delay = 0
+        current = 0
+        state = 0
+        reps = 0
+        predictor = MpipePredictor(detection_thr=.8, tracking_thr=.9)
+
+        # open and prepare image of exercise TODO: class method
+        for img_path in self.IMAGE:
+            insert_img = cv2.imread(img_path)
+            insert_img = cv2.resize(insert_img, None, None, fx=.6, fy=.4)
+            self.WORKOUT_IMAGES.append(insert_img)
+
+        # open and prepare video for processing
+        video = cv2.VideoCapture(self.PATH_TO_VIDEO)
+        self.START_TIME = time()
+        self.W = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self.H = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        frames_per_second = video.get(cv2.CAP_PROP_FPS)
+        num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        scale = max(self.W, self.H) / 400 * self.SCALE
+
+        frame_gen = self.frame_from_video(num_frames, video)
+
+        for frame in frame_gen:
+
+            current += 1
+
+            if not reps == self.STEPS:
+                try:
+                    outputs = predictor.get_keypoints(frame)
+                    kps = get_updated_keypoint_dict(outputs)
+                    angles = get_angle_dict(kps, dict_is_updated=True)
+
+                    frame, state_, txt, reps = self._check_exercise(img=frame, kps=kps, state=state, angles=angles,
+                                                                    reps=reps, scale=scale, verbose=False)
+
+                    if state_ == -1:
+                        if delay < 10:  # ######################################### #
+                            print("HOLD!!!!")
+                            delay += 1
+                        else:
+                            delay = 0
+
+                    if state_ > state and reps != self.STEPS:
+                        print("YOU GOT IT!")
+
+                    elif state_ == -1 and reps == self.STEPS:
+                        print("NICE!")
+                        video.release()
+                        break
+
+                    state = state_
+
+                except AttributeError as e:
+                    print(e)
+                    txt = "Try to stay visible for the camera"
+                    frame = draw_box_with_text(frame, txt, edge_color=(255, 255, 255), border=self.BORDER)
+
+                frame = insert_image(frame, self.WORKOUT_IMAGES[state - 1], x=940, y=35) # TODO: fix coordinates
+
+                if self.SAVE_OUTPUT:
+                    if self.OUTPUT_FILE is None:  # open output file when 1st frame is received
+                        print("CREATE")
+                        frame_width, frame_height, _ = [int(num) for num in frame.shape]
+                        self.OUTPUT_FILE = cv2.VideoWriter(filename="test.mp4",
+                                                           fourcc=cv2.VideoWriter_fourcc(*"mp4v"),
+                                                           fps=frames_per_second,
+                                                           frameSize=(frame_height, frame_width),
+                                                           isColor=True, )
+                    if self.OUTPUT_FILE is not None:
+                        self.OUTPUT_FILE.write(frame)
+
+        if self.OUTPUT_FILE is not None:
+            print("RELEASE")
+            self.OUTPUT_FILE.release()
+
     def close(self):
         self.OUTPUT_FILE = None
         self.FINAL = None
@@ -307,7 +400,8 @@ class MpipeWorkout:
 def get_parser():
     """Gets parameters from the command line"""
     parser = argparse.ArgumentParser(description="Standard Parser")
-    parser.add_argument("--test", action="store_true", help="test camera")
+    parser.add_argument("--test_camera", action="store_true", help="test camera")
+    parser.add_argument("--test_video", action="store_true", help="process test video")
     parser.add_argument("--repetitions", type=int, default=4, help="number of repetitions")
     parser.add_argument("--weight", type=int, default=60, help="your weight")
     parser.add_argument("--config", type=str, default="dumbbell_lateral_raise", help="workout config file")
@@ -320,7 +414,8 @@ def get_parser():
 def main():
     """Main function"""
     args = get_parser().parse_args()
-    test = args.test
+    test_camera = args.test_camera
+    test_video = args.test_video
     reps = args.repetitions
     weight = args.weight
     workout = args.config
@@ -358,9 +453,16 @@ def main():
     if save_video:
         m.SAVE_OUTPUT = True
 
-    if test:
+    if test_camera:
         print(m.test_device(1))
         print(m.test_device(0))
+
+    elif test_video:
+        path_to_video = "testdata/processed_video.mp4"
+        m.PATH_TO_VIDEO = path_to_video
+        m.SAVE_OUTPUT = True
+        m.process_video()
+
     else:
         m.process()
 
