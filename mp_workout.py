@@ -390,6 +390,9 @@ class MpipeWorkout:
 
         if self.FINAL is not None:
             cv2.imwrite("test.jpg", self.FINAL)
+        else:
+            frame = cv2.resize(frame, (640, 480))
+            cv2.imwrite("test.jpg", frame)
 
     def close(self):
         self.OUTPUT_FILE = None
