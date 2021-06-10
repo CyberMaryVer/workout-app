@@ -365,8 +365,8 @@ class MpipeWorkout:
 
                     state = state_
 
-                except AttributeError as e:
-                    print(e)
+                except Exception as e:
+                    # print(e)
                     txt = "Try to stay visible for the camera"
                     frame = draw_box_with_text(frame, txt, edge_color=(255, 255, 255), border=self.BORDER)
 
