@@ -241,8 +241,9 @@ class MpipeWorkout:
         while cv2.waitKey(1) != 27:
             ret, frame = cam.read()
 
-            # if frame is None:
-            #     continue
+            if not ret:
+                # ignore empty frame
+                continue
 
             frame = cv2.flip(frame, 1)
             current += 1
