@@ -241,8 +241,8 @@ class MpipeWorkout:
         while cv2.waitKey(1) != 27:
             ret, frame = cam.read()
 
-            if frame is None:
-                continue
+            # if frame is None:
+            #     continue
 
             frame = cv2.flip(frame, 1)
             current += 1
@@ -387,6 +387,9 @@ class MpipeWorkout:
         if self.OUTPUT_FILE is not None:
             print("RELEASE")
             self.OUTPUT_FILE.release()
+
+        if self.FINAL is not None:
+            cv2.imwrite("test.jpg", self.FINAL)
 
     def close(self):
         self.OUTPUT_FILE = None
