@@ -153,7 +153,8 @@ class Camera:
                 img = cv2.imencode('.png', img)[1].tobytes()
 
         else:
-            with open("images/not_found.jpeg", "rb") as f:
+            # print(len(self.frames))
+            with open("static/images/loading.gif", "rb") as f:
                 img = f.read()
 
         return img, ret
