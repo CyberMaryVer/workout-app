@@ -4,6 +4,7 @@ tutorials
 preprocess
 logs
 archive
+__pycache__/
 gallery/*.jpg
 venv
 *.mp4
