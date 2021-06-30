@@ -22,7 +22,8 @@ class Camera:
         logger.info(f"Initializing camera class with {fps} fps and video_source={video_source}")
         self.fps = fps
         self.video_source = video_source
-        self.camera = cv2.VideoCapture(self.video_source)
+        # self.camera = cv2.VideoCapture(self.video_source)
+        self.camera = None
         self.history_cash = 5  # We want a max of 5s history to be stored, thats 5s*fps
         self.max_frames = self.history_cash * self.fps
         self.frames = []
@@ -68,6 +69,8 @@ class Camera:
     def _capture_loop(self):
         dt = 1 / self.fps
         logger.debug("Observation started")
+        self.camera = cv2.VideoCapture(self.video_source)
+
         while self.isrunning:
             ret, frame = self.camera.read()
             if ret:

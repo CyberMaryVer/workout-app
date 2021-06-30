@@ -1,4 +1,4 @@
-import numpy, cv2
+import cv2
 from flask import Flask, render_template, send_from_directory, Response
 # from flask_socketio import SocketIO
 from pathlib import Path

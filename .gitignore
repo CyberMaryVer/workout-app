@@ -3,6 +3,7 @@ testdata
 tutorials
 preprocess
 logs
+archive
 gallery/*.jpg
 venv
 *.mp4

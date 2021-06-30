@@ -14,12 +14,12 @@ PATHS = ["keypoint_rcnn_R_50_FPN_1x.yaml",
 
 def build_cfg(model: str, device: str, thresh=.5):
     """
-    creates a fresh new config and builds the unipose
+    creates a fresh new config and builds the model
     """
     cfg = get_cfg()
 
     config_path = "COCO-Keypoints/" + model
-    print(f"load unipose from {config_path}...")
+    print(f"load model from {config_path}...")
     cfg.merge_from_file(model_zoo.get_config_file(config_path))
 
     # choose configuration
