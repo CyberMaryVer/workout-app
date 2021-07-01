@@ -4,15 +4,22 @@
 import os
 import cv2
 import torch
-from inference_config import build_cfg
-from inference_config import PATHS
+# from inference_config import build_cfg
+# from inference_config import PATHS
 from detectron2.data import MetadataCatalog
 from detectron2.engine import DefaultPredictor
+from detectron2 import model_zoo
+from detectron2.config import get_cfg
 from geometry import get_central_points
 from predictor import AsyncPredictor
 from visualization import visualize_keypoints
 
 _KEYPOINT_THRESHOLD = 0.05
+
+PATHS = ["keypoint_rcnn_R_50_FPN_1x.yaml",
+         "keypoint_rcnn_R_50_FPN_3x.yaml",
+         "keypoint_rcnn_R_101_FPN_3x.yaml",
+         "keypoint_rcnn_X_101_32x8d_FPN_3x.yaml"]
 
 INSTANCE_NUM = 0
 KEYPOINT_NAMES = [
@@ -34,6 +41,45 @@ KEYPOINT_NAMES = [
     'left_ankle',
     'right_ankle'
 ]
+
+
+def build_cfg(model: str, device: str, thresh=.5):
+    """
+    creates a fresh new config and builds the model
+    """
+    cfg = get_cfg()
+
+    config_path = "COCO-Keypoints/" + model
+    print(f"load model from {config_path}...")
+    cfg.merge_from_file(model_zoo.get_config_file(config_path))
+
+    # choose configuration
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = thresh  # set threshold for this unipose
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.NAME = "KRCNNConvDeconvUpsampleHead"
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_RESOLUTION = 14
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_SAMPLING_RATIO = 0
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.CONV_DIMS = tuple(512 for _ in range(8))
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.NUM_KEYPOINTS = 17  # 17 is the number of keypoints in COCO.
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.MIN_KEYPOINTS_PER_IMAGE = 1
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS = True
+
+    # Multi-task loss weight to use for keypoints
+    # Recommended values:
+    #   - use 1.0 if NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS is True
+    #   - use 4.0 if NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS is False
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.LOSS_WEIGHT = 1.0
+
+    # Type of pooling operation applied to the incoming feature map for each RoI
+    # cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_TYPE = "ROIAlignV2"
+
+    print("load weights...")
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(config_path)
+
+    if device == "cpu":
+        cfg["MODEL"]["DEVICE"] = device
+        print(f'configuration was changed to: {cfg["MODEL"]["DEVICE"]}')
+
+    return cfg
 
 
 def convert_tensor_to_cords(tensor_list):
